@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/p/create', 'PostsController@create');
+Route::get('/p/{post}', 'PostsController@show'); //Route Model Binding if parameter is same name in show method
 Route::post('/p', 'PostsController@store');
 
 Route::get('/profile/{user}', 'ProfileController@index')->name('profile.show');
