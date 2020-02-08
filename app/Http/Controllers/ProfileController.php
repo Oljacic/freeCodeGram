@@ -13,10 +13,13 @@ class ProfileController extends Controller
     }
 
     public function edit(User $user) {
+        $this->authorize('update', $user->profile);
         return view('profiles.edit', compact('user'));
     }
 
     public function update(User $user) {
+        $this->authorize('update', $user->profile);
+
         $data = request()->validate([
             'title' => 'required',
             'description' => 'required',
@@ -24,6 +27,10 @@ class ProfileController extends Controller
             'image' => '',
         ]);
 
-        dd($data);
+        auth()->user()->profile->update($data);
+
+        return redirect("/profile/{$user->id}");
+
+//        dd($data);
     }
 }
