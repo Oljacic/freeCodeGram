@@ -35,7 +35,7 @@ class PostsController extends Controller
         return redirect('/profile/'.auth()->user()->id);
     }
 
-    public function show(\App\Post $post) { // Route Model Binding
+    public function show($post) { // Route Model Binding
         return view('posts.show', compact('post')); // This is great and useful same name as argument
     }
 }
