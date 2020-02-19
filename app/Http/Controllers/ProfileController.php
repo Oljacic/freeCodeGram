@@ -9,7 +9,8 @@ use Intervention\Image\Facades\Image;
 class ProfileController extends Controller
 {
     public function index(User $user) {
-        return view('profiles.index', compact('user'));
+        $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
+        return view('profiles.index', compact('user', 'follows'));
 
     }
 
@@ -36,13 +37,13 @@ class ProfileController extends Controller
 
             $image = Image::make(public_path("storage/{$imagePath}"))->fit(1000, 1000);
             $image->save()->destroy();
+
+            $imageArray = ['image' => $imagePath];
         }
 
+
         auth()->user()->profile->update(
-            array_merge(
-                $data,
-                ['image' => $imagePath]
-            )
+            array_merge($data, $imageArray ?? [])
         );
 
         return redirect("/profile/{$user->id}");
